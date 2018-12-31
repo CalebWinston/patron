@@ -4,9 +4,11 @@ from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_blogging_patron import BloggingEngine, SQLAStorage
 from flask_bootstrap import Bootstrap
+from flask_bootstrap.nav import BootstrapRenderer
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
+from flask_nav import Nav, register_renderer
 from flask_principal import Permission, RoleNeed
 from flask_sqlalchemy import SQLAlchemy
 
@@ -21,6 +23,7 @@ login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message_category = 'info'
 mail = Mail()
+nav = Nav()
 scheduler = APScheduler()
 
 # global
@@ -65,6 +68,11 @@ def create_app(config_class=Config):
         url_prefix=app.config.get('BLOGGING_URL_PREFIX')
     )
     app.register_blueprint(main_bp)
+
+    # navbars
+    from app import navbars
+    nav.init_app(app)
+    register_renderer(app, 'bootstrap', BootstrapRenderer)
 
     # tasks
     from app import tasks

@@ -6,7 +6,8 @@
     {{post.title}}
 {% endblock title %}
 
-{% block main %}
+{% block content %}
+{{super()}}
 {% if meta.is_user_blogger %}
     <div class="modal fade" id="confirmModal" >
         <div class="modal-dialog">
@@ -58,4 +59,4 @@
   {% include "blogging/social_links.html" %}
   <hr>
 {% include "blogging/disqus.html" %}
-{% endblock main %}
+{% endblock %}
